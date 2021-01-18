@@ -2,7 +2,6 @@ from _dijkstra import Dijkstra
 from heap import binary_heap as heap
 import networkx as nx
 from copy import deepcopy
-import os
 from heapq import heappop, heappush
 
 class SPT:
@@ -28,12 +27,6 @@ class eppstein:
         self.P        = None
         self.distance = None
     
-    def __call__(self, *args, **kwds):
-        name = ""
-        if os.path.exists(name):
-            pass
-        self.__preprocess()
-
     def __preprocess(self):
         """
         STEP 1 : Construct the shortest paths tree
@@ -96,7 +89,7 @@ class eppstein:
         H_G[self.target] = h_g
         for edge in nx.bfs_edges(self.T.reverse(), source=self.target):
             _, child = edge
-            h_g = H_T[child]# ちょっと怪しいかも...?
+            h_g = H_T[child]
             if len(h_g.heap) > 0:
                 out_root = H_out[child].root
                 for v in nx.shortest_path(self.T, source=child, target=self.target):
@@ -217,7 +210,6 @@ class eppstein:
         return sorted([(v, head) for head in self.G[v]])
 
     def __delta(self, edge):
-        # 事前計算して置いといた方がいいのかも
         tail, head = edge
         return self.G[tail][head]["weight"] + self.distance[head] -self.distance[tail]
     
