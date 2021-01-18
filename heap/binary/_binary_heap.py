@@ -1,4 +1,3 @@
-from numba import jit
 class Binaryheap:
     class Node:
         
@@ -57,7 +56,6 @@ class Binaryheap:
         self.heap[i].ix,self.heap[j].ix         = self.heap[j].ix,self.heap[i].ix
         self.heap[i], self.heap[j]              = self.heap[j], self.heap[i] 
 
-    @jit(parallel=True) 
     def heapify(self) -> None:
         for i in reversed(range(self.size//2)):
             self.__min_heapify(i)
