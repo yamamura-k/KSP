@@ -1,4 +1,4 @@
-from testtools import timer
+from .test.testtools import timer
 from heap import fibonacci_heap as heap
 #from heap import binary_heap as heap
 from collections import defaultdict
