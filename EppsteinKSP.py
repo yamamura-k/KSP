@@ -41,7 +41,7 @@ def ConstructShortestPathTree(G: DiGraph, source, target=None, weight="weight"):
 
 class EppsteinKSP:
     def eppstein_ksp(self, G: DiGraph, source: Any, target: Any, K: int = 1, weight="weight") -> List[NamedTuple]:
-
+        self.target = target
         T =  ConstructShortestPathTree(G.reverse(), target, weight=weight)# reversed shortest path tree
         self.setDelta(G, T, weight=weight)
         nodeHeaps    = dict()
@@ -120,6 +120,7 @@ class EppsteinKSP:
         G\T(最短路)から外れた部分の移動を表現する。
         """
         for childHeap in kpathImplicit.heap.children:
+            if childHeap.sidetrack.fromNode == self.target:continue
             prefPath      = kpathImplicit.prefPath
             candidateCost = ksp[prefPath].totalCost + childHeap.sidetrackCost
             candidate = EppsteinPath(childHeap, prefPath, candidateCost)
@@ -132,6 +133,7 @@ class EppsteinKSP:
         """
         if kpathImplicit.heap.sidetrack.toNode in outrootHeaps:
             childHeap     = outrootHeaps[kpathImplicit.heap.sidetrack.toNode]
+            if childHeap.sidetrack.fromNode == self.target:return
             candidateCost = ksp[prefPath].totalCost + childHeap.sidetrackCost
             candidate = EppsteinPath(childHeap, prefPath, candidateCost)
             heappush(pathPQ, candidate)
